@@ -91,5 +91,18 @@ function handle_list_albums(req, res) {
     });
 }
 
+function handle_get_album(req, res) {
+    var album_name = req.url.substr(7, req.url.length - 12);
+    load_album(album_name, function(err, album_contents) {
+        if (err && err.error == "no such album") {
+            send_failure(res, 404, err);
+        } else if (err) {
+            send_failure(res, 500, err);
+        } else {
+            send_success(res, { album_data: album_contents });
+        }
+    });
+}
+
 var s = http.createServer(handle_incoming_request);
 s.listen(8000);
