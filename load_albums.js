@@ -104,5 +104,31 @@ function handle_get_album(req, res) {
     });
 }
 
+function make_error(err, msg) {
+    var e = new Error(msg);
+    e.code = err;
+    return e;
+}
+
+function send_success(res, data) {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    var output = { error: null, data: data };
+    res.end(JSON.stringify(output) + " \n");
+}
+
+function send_failure(res, code, err) {
+    var code = (err.code) ? err.code : err.name;
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: code, message: err.message }) + " \n");
+}
+
+function invalid_resource() {
+    return make_error("invalid resource", "the requested resource does not exist");
+}
+
+function no_such_album() {
+    return (make_error("no such album", "The specified album does not exist"));
+}
+
 var s = http.createServer(handle_incoming_request);
 s.listen(8000);
