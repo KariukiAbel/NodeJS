@@ -4,6 +4,7 @@ var http = require("http"),
 function load_album_list(callback) {
     fs.readdir("albums/", function(err, files) {
         if (err) {
+<<<<<<< HEAD
             callback(make_error("file error " + JSON.stringify(err)));
             return;
         }
@@ -58,11 +59,18 @@ function load_album(album_name, callback) {
                 iterator(index + 1);
             });
         })(0);
+=======
+            callback(err);
+            return;
+        }
+        callback(null, files);
+>>>>>>> 9ad6b0ab823d92f9794df74c7923e7ae234e7545
     });
 }
 
 function handle_incoming_request(req, res) {
     console.log('INCOMING REQUEST: ' + req.method + " " + req.url);
+<<<<<<< HEAD
     // load_album_list(function(err, albums) {
     //     if (err) {
     //         res.writeHead(503, { "Content-Type": "application/json" });
@@ -130,5 +138,19 @@ function no_such_album() {
     return (make_error("no such album", "The specified album does not exist"));
 }
 
+=======
+    load_album_list(function(err, albums) {
+        if (err) {
+            res.writeHead(503, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(err) + "\n");
+            return;
+        }
+        var out = { error: null, data: { albums: albums } };
+        res.writeHead(200, { "Content-Type": 'application/json' });
+        res.end(JSON.stringify(out) + "\n");
+    });
+}
+
+>>>>>>> 9ad6b0ab823d92f9794df74c7923e7ae234e7545
 var s = http.createServer(handle_incoming_request);
 s.listen(8000);

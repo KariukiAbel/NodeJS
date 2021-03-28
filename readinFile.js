@@ -5,9 +5,12 @@ var fs= require('fs'); //adds additonal functionality
 fs.open(
   'info.txt', 'r',
   function(err, handle) {
+<<<<<<< HEAD
     if(err){
       console.log("ERROR: " + err.code + " ( " + err.message +" )")
     }
+=======
+>>>>>>> 9ad6b0ab823d92f9794df74c7923e7ae234e7545
     var buf = new Buffer(100000);
       // file = handle;
       fs.read(
